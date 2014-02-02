@@ -1,67 +1,35 @@
-#include <windows.h>
-#include <windowsx.h>
-
-// forward declaration of the Window message handler
-LRESULT CALLBACK WindowProcedure(HWND windowHandler, UINT message, WPARAM wParam, LPARAM lParam);
+#include "StartUp.h"
+#include "WindowManagement\WindowFactory.h"
+#include "Engine\Engine.h"
 
 int WINAPI WinMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPSTR lpCmdLine,
-	int nCmdShow) {
+				   HINSTANCE hPrevInstance,
+				   LPSTR lpCmdLine,
+				   int nCmdShow) {
 
-	HWND gameWindowHandler;
-	WNDCLASSEX gameWindow;
+	WindowFactory::WindowClass<Engine, &Engine::WindowProcessing> win(L"GameWindow",
+																	 CS_HREDRAW | CS_VREDRAW,
+																	 NULL,
+																	 NULL,
+																	 LoadCursor(NULL, IDC_ARROW),
+																	 (HBRUSH)COLOR_WINDOW,
+																	 NULL);
 
-	ZeroMemory(&gameWindow, sizeof(WNDCLASSEX));
+	Engine engine;
 
-	gameWindow.cbSize = sizeof(WNDCLASSEX);
-	gameWindow.style = CS_HREDRAW | CS_VREDRAW;
-	gameWindow.lpfnWndProc = WindowProcedure;
-	gameWindow.hInstance = hInstance;
-	gameWindow.hCursor = LoadCursor(NULL, IDC_ARROW);
-	gameWindow.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	gameWindow.lpszClassName = L"GameWindow";
-	RegisterClassEx(&gameWindow);
-	gameWindowHandler = CreateWindowEx(NULL,
-		L"GameWindow",
-		L"Project: Forgotten",
-		WS_OVERLAPPEDWINDOW,
-		300,
-		300,
-		500,
-		400,
-		NULL,
-		NULL,
-		hInstance,
-		NULL);
+	HWND tmp = win.createWindow(engine,
+								NULL,
+								L"Project: Forgotten",
+								WS_OVERLAPPEDWINDOW,
+								500,
+								400,
+								300,
+								300);
 
-	ShowWindow(gameWindowHandler, nCmdShow);
+	ShowWindow(tmp, nCmdShow);
 
-	MSG message;
+	engine.run();
 
-	while (GetMessage(&message, NULL, 0, 0)) {
-		TranslateMessage(&message);
-		DispatchMessage(&message);
-	}
+	return 0;
 
-	return message.wParam;
-}
-
-/**
-* Window procedure.
-*
-* @param	windowHandler	Handle of the window handler.
-* @param	message		 	The message.
-* @param	wParam		 	The wParam field of the message.
-* @param	lParam		 	The lParam field of the message.
-*
-* @return	A CALLBACK.
-*/
-LRESULT CALLBACK WindowProcedure(HWND windowHandler, UINT message, WPARAM wParam, LPARAM lParam) {
-	switch (message) {
-	case WM_DESTROY: PostQuitMessage(0);
-		return 0;
-	}
-
-	return DefWindowProc(windowHandler, message, wParam, lParam);
 }

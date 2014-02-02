@@ -76,7 +76,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="StartUp.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\Engine.h" />
+    <ClInclude Include="StartUp.h" />
+    <ClInclude Include="WindowManagement\WindowFactory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
