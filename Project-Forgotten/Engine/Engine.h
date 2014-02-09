@@ -5,6 +5,8 @@
 class Engine {
 
 private:
+	bool running;
+
 
 public:
 	Engine();

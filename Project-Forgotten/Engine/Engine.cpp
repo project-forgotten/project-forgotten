@@ -1,15 +1,31 @@
 #include "Engine.h"
 
-Engine::Engine() {}
+Engine::Engine() {
+	running = true;
+}
 
 Engine::~Engine() {}
 
 int Engine::run() {
 	MSG message;
 
-	while (GetMessage(&message, NULL, 0, 0)) {
-		TranslateMessage(&message);
-		DispatchMessage(&message);
+	while (running) {
+
+		// PeekMessage only looks up for new message
+		if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&message);
+			DispatchMessage(&message);
+
+			if (message.message == WM_QUIT) {
+				running = false;
+			}
+
+		} else {
+
+			// TODO
+
+		}
+
 	}
 
 	return message.wParam;
