@@ -24,7 +24,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 								500,
 								400,
 								300,
-								300);
+								300,
+								true);
 
 	ShowWindow(tmp, nCmdShow);
 

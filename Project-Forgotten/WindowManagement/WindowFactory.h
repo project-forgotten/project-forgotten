@@ -123,8 +123,9 @@ namespace WindowFactory {
 			 * @param	nHeight			(Optional) the height.
 			 * @param	X				(Optional) the  int to process.
 			 * @param	Y				(Optional) the  int to process.
+			 * @param 	adjustWindow	(Optional) true, if the size of the internal rectangle should be adjusted 										
 			 * @param	hWndParent  	(Optional) the window parent.
-			 * @param	hMenu			(Optional) the menu.
+			 * @param	hMenu			(Optional) the menu.		
 			 *
 			 * @return	The new window handler. Does need to be catched to visualize the window.
 			 */
@@ -136,16 +137,24 @@ namespace WindowFactory {
 							  int nHeight = CW_USEDEFAULT,
 							  int X = CW_USEDEFAULT,
 							  int Y = CW_USEDEFAULT,
+							  bool adjustWindow = false,
 							  HWND hWndParent = 0,
 							  HMENU hMenu = 0) {
+
+				RECT windowRectangle = { 0, 0, nWidth, nHeight };
+
+				if (adjustWindow) {
+					AdjustWindowRect(&windowRectangle, dwStyle, FALSE);
+				}
+
 				return CreateWindowEx(dwExStyle,
 									MAKEINTATOM(cls), // the window class name is queried
 									lpWindowName,
 									dwStyle,
 									X,
 									Y,
-									nWidth,
-									nHeight,
+									windowRectangle.right - windowRectangle.left,
+									windowRectangle.bottom - windowRectangle.top,
 									hWndParent,
 									hMenu,
 									GetModuleHandle(0),
