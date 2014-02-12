@@ -17,17 +17,19 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	Engine engine;
 
-	HWND tmp = win.createWindow(engine,
-								NULL,
-								L"Project: Forgotten",
-								WS_OVERLAPPEDWINDOW,
-								500,
-								400,
-								300,
-								300,
-								true);
+	HWND windowHandler = win.createWindow(engine,
+										NULL,
+										L"Project: Forgotten",
+										WS_OVERLAPPEDWINDOW,
+										500,
+										400,
+										300,
+										300,
+										true);
 
-	ShowWindow(tmp, nCmdShow);
+	ShowWindow(windowHandler, nCmdShow);
+
+	engine.Init(windowHandler);
 
 	engine.run();
 
